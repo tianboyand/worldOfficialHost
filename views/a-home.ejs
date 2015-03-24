@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="/styles/bootstrap.min.css">
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<div class = "container">
+	<form action="/user/login" method="POST" class="form-signin" style="margin-top:150px;">
+            <div class="col-sm-6 col-md-offset-3" style="padding-bottom:100px;">
+                <div class="thumbnail">
+                  <h6 class="form-signin-heading" style="text-align:center;">Admin Page</h6>
+                  
+                  <div class="caption">
+                      <div class="input-group form-group">
+                          <span class="input-group-addon" style="color:white; background-color:black; border:1px solid black;">
+                            <span class="glyphicon glyphicon-user"></span>
+                          </span>
+                          <input type="text" class="form-control" placeholder="Email address / Username" name="email">
+                      </div>
+
+                      <div class="input-group control-group">
+                          <span class="input-group-addon" style="color:white; background-color:black; border:1px solid black;">
+                            <span class="glyphicon glyphicon-lock"></span>
+                          </span>
+                          <input type="password" class="form-control" placeholder="Password" name="password">
+                      </div>
+                      <br>
+                      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Masuk"/>
+                      <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+                      <br>
+                      <p style="font-size:15px; font-weight: normal;">Pengguna Baru di MLM ? <a href="#" data-toggle="modal" data-target="#myModal">Daftar Langsung</a>.</p>
+                  </div>
+                </div>
+          </div>
+	</form>
+</div>
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Daftar Diri Anda</h4>
+      </div>
+      <form action="/user/registerasadmin" method="POST" class="regsite" id="regsite">
+      <div class="modal-body">
+        <div class="control-group">
+                    <input type="text" class="form-control" placeholder="your username" name="username" id="username">
+                    </div>
+                    <br>
+                    <div class="control-group">
+                        <input type="password" class="form-control" placeholder="password" name="password" id="password">
+                    </div>
+                    <br>
+                    <div class="control-group">
+                        <input type="password" class="form-control" placeholder="password confirmation" name="confirmation" id="confirmation">
+                    </div>
+                    <br>
+                    <input type="hidden" value="1" name="ref" />
+                    <div class="control-group">
+                        <input type="text" class="form-control" placeholder="your name" name="name" id="name">
+                    </div>
+                    <br>
+                    <div class="control-group">
+                        <input type="text" class="form-control" placeholder="email address" name="email" id="email">
+                    </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class= "btn btn-primary" value="Daftar" id="update">
+        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+      </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

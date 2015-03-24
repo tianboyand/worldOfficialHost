@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>World Official</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+    <!--STYLES-->
+    
+    <!--STYLES END-->
+
+    <!-- ////////////////////////////////// -->
+<!-- //     Retina Bookmark Icon     // -->
+<!-- ////////////////////////////////// -->
+<link rel="apple-touch-icon-precomposed" href="apple-icon.png"/>
+
+<!-- ////////////////////////////////// -->
+<!-- //     Retina Bookmark Icon     // -->
+<!-- ////////////////////////////////// -->
+<link rel="apple-touch-icon-precomposed" href="apple-icon.png"/>
+
+<!-- ////////////////////////////////// -->
+<!-- //      Stylesheets Files       // -->
+<!-- ////////////////////////////////// -->
+<link rel="stylesheet" href="/styles/style.css"/>
+<link rel="stylesheet" href="/styles/media.css"/>
+<link rel="stylesheet" href="/styles/revolution.css" media="screen"/>
+<link rel="stylesheet" href="/styles/media-slideshow.css" media="screen"/>
+<link rel="stylesheet" href="/styles/noscript.css" media="screen,all" id="noscript"/>
+
+
+<!-- ////////////////////////////////// -->
+<!-- //     Google Webfont Files     // -->
+<!-- ////////////////////////////////// -->
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300,700,500,900"/>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans"/>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Pacifico"/>
+
+<!-- ////////////////////////////////// -->
+<!-- //        Favicon Files         // -->
+<!-- ////////////////////////////////// -->
+<link rel="shortcut icon" href="/images/favicon.ico"/>
+
+<!-- ////////////////////////////////// -->
+<!-- //      Javascript Files        // -->
+<!-- ////////////////////////////////// -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/js/jquery.easing-1.3.min.js"></script>
+<script src="/js/modernizr.js"></script>
+<script src="/js/superfish.js"></script>
+<script src="/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+<script src="/js/jquery.themepunch.plugins.min.js"></script>
+<script src="/js/jquery.themepunch.revolution.min.js"></script>
+<script src="/js/mediaelement-and-player.min.js"></script>
+<script src="/js/jquery.fancyboxe45f.js?v=2.0.6"></script>
+<script src="/js/jquery.fancybox-media2c70.js?v=1.0.3"></script>
+<script src="/js/jquery.donutchart.js"></script>
+<script src="/js/jflickrfeed.min.js"></script>
+<script src="/js/jquery.twitter.js"></script>
+<script src="/js/accordion-functions.js" ></script>
+<script src="/js/theme-functions.js"></script>
+<script src="/js/jquery.retina.js"></script>
+<script>
+$(document).ready(function() {
+//Retina Image
+$('img.retina').retina('@2x');
+
+//Slideshow
+$('.banner').revolution({
+delay:9000,
+startwidth:1040,
+startheight:463,
+onHoverStop:"off",            // Stop Banner Timet at Hover on Slide on/off
+
+thumbWidth:100,             // Thumb With and Height and Amount (only if navigation Tyope set to thumb !)
+thumbHeight:50,
+thumbAmount:3,
+
+hideThumbs:0,
+navigationType:"bullet",        // bullet, thumb, none
+navigationArrows:"none",        // nexttobullets, solo (old name verticalcentered), none
+
+navigationStyle:"round-old",      // round,square,navbar,round-old,square-old,navbar-old, or any from the list in the docu (choose between 50+ different item), custom
+
+
+navigationHAlign:"center",        // Vertical Align top,center,bottom
+navigationVAlign:"bottom",        // Horizontal Align left,center,right
+navigationHOffset:-419,
+navigationVOffset:72,
+
+touchenabled:"on",            // Enable Swipe Function : on/off
+
+stopAtSlide:-1,             // Stop Timer if Slide "x" has been Reached. If stopAfterLoops set to 0, then it stops already in the first Loop at slide X which defined. -1 means do not stop at any slide. stopAfterLoops has no sinn in this case.
+stopAfterLoops:-1,            // Stop Timer if All slides has been played "x" times. IT will stop at THe slide which is defined via stopAtSlide:x, if set to -1 slide never stop automatic
+
+hideCaptionAtLimit:0,         // It Defines if a caption should be shown under a Screen Resolution ( Basod on The Width of Browser)
+hideAllCaptionAtLilmit:0,       // Hide all The Captions if Width of Browser is less then this value
+hideSliderAtLimit:0,          // Hide the whole slider, and stop also functions if Width of Browser is less than this value
+
+
+fullWidth:"on",
+
+shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (No Shadow in Fullwidth Version !)
+})
+
+});
+</script>
+  </head>
+
+  <body>
+    <header>
+    
+        <!-- top info start here -->
+        <div id="top-info">
+            <div class="row">
+                <div class="twelve column">
+                    <!-- logo start here -->
+                    <div id="logo">
+                        <a href="/"><img src="/images/logo.png" alt="main-logo" class="retina"/></a>
+                    </div>           
+                    <!-- logo end here -->
+                    
+                    <div id="top-socials">
+                        <ul>                                
+                            <% if(session.authenticated) { %>
+                                <li><a href="/user/logout">Logout</a></li>
+                            <% } else { %>
+                                <li><a href="/auth/login">Login </a></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- top info end here -->        
+        
+        
+        <div id="mainmenu-wrapper">
+            <div class="left-menu">
+                    
+                <!-- navigation start here -->
+                <nav id="mainmenu">
+                    <ul id="menu">
+                        <li><a href="/">Home</a><span class="desc-menu">It's our home</span>
+                        </li>                                                   
+                        <li><a href="/team">Team</a><span class="desc-menu">List</span>
+                        </li>
+                        <li class="dropdown"><a href="#">GH Bonus</a><span class="desc-menu">Total</span>
+                            <ul> 
+                                <li><a href="bonussponsor.html">Bonus Sponsor</a></li>
+                                <li><a href="bonusmanager.html">Bonus Manager</a></li>
+                            </ul>
+                        </li> 
+                        <li><a href="/register">Register</a><span class="desc-menu">Member</span>
+                        </li>
+                        <li><a href="/user/home">Ticket</a><span class="desc-menu">Transfer</span></li>
+                         <% if(session.authenticated) { %>
+                        <li class="dropdown"><a href="#">Hai, <%=session.User.username%></a><span class="desc-menu">Settings</span>
+                            <ul> 
+                                <li><a href='/user/home'>View Profile</a></li>
+                                <li><a href='/user/logout'>Logout</a></li>
+                            </ul>
+                        </li> 
+                        <% } else { %>
+                                <li><a href="/auth/login">Login </a><span class="desc-menu">Login</span></li>
+                        <% } %>
+                    </ul>
+                </nav>
+                <!-- navigation end here --> 
+                    
+            </div>
+        </div>
+    </header>
+    <!-- header end here -->
+
+    
+    <%- body %>
+
+<footer>   
+        <div class="row">
+            <div class="nine column">
+                <h6>Contact Information</h6>
+                <div class="say-hello">
+                    <h4><a href="contact.html">Holla!</a></h4>
+                </div>
+                <ul class="footer-address no-bullet">
+                    <li class="address">25 Silver Avenue. Jakarta, JKT, 12345. IND</li>
+                    <li class="phone">(621) 123 4567</li>
+                    <li class="email"><a href="mailto:mail@yourdomain.com">mail@yourdomain.com</a></li>
+                </ul>
+                
+                <ul class="footer-link no-bullet">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Legal Notice</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>       
+            </div>
+            
+            <div class="three column">
+                <img src="/images/logo.png" alt="" class="footer-logo retina" />
+                <p>Temporibus autem quibusdam officiis debitis aut rerum necessitatibus saepe</p>
+                <p>&copy; 2013 by Indonez. All Rights Reserved. </p>    
+            </div>       
+        </div>
+    </footer>
+
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <!--SCRIPTS END-->
+  </body>
+</html>
