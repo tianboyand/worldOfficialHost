@@ -29,7 +29,13 @@ module.exports.policies = {
   '*': 'flash',
   user : {
       'home' : ['sessionAuth','flash'],
-      'register' : ['sessionAuth','flash']
+      'register' : ['sessionAuth','flash'],
+      'create' : ['sessionAuth','flash'],
+      'logout' : ['sessionAuth','flash'],
+      'sendticket' : ['sessionAuth','flash'],
+      'profile' : ['sessionAuth','flash'],
+      'editprofile' : ['sessionAuth','flash'],
+      'update' : ['sessionAuth','flash'],
   },
   auth : {
       'login' : 'flash'

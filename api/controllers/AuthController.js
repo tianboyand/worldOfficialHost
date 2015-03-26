@@ -7,7 +7,10 @@
 
 module.exports = {
 	login : function(req,res,next){
-		res.view();
+		if(req.session.authenticated)
+			return res.redirect('/user/home');
+		else
+			res.view();
 	}
 };
 

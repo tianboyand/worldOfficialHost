@@ -4,12 +4,19 @@
                 <p class="lead">Add Member</p>
                 <div id="contact-form-area">
                     <!-- Contact Form Start //-->
+                    <% if(flash && flash.err) { %>
+                      <ul class="alert alert-success" type="none">
+                        <% Object.keys(flash.err).forEach(function(error) { %>
+                          <li><%= JSON.stringify(flash.err[error]) %></li>
+                        <% }) %>
+                        </ul>
+                    <% } %>
                     <form action="/user/create" id="contactform"> 
                         <fieldset> 
                         <label>Username <em>*</em></label>                           
                         <input type="text" name="username" class="textfield" id="username" value="" required/> 
                         <label>Nama <em>*</em></label>                           
-                        <input type="text" name="nama" class="textfield" id="nama" value="" required/>
+                        <input type="text" name="name" class="textfield" id="nama" value="" required/>
                         <label>No. HP <em>*</em></label>                           
                         <input type="text" name="nomorhp" class="textfield" id="nomorhp" value="" required/>  
                         <label>E-mail <em>*</em></label> 
@@ -40,5 +47,4 @@
             </div>     
         </div>              
     </section>
-<script src="/js/jquery.min.js"></script>
 <script src="/scripts/register/1.js"></script>

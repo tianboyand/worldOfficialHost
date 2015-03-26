@@ -1,0 +1,47 @@
+<section class="content-wrapper">
+        <div class="row">
+            <div class="eleven column">
+                <p class="lead">Edit Profil Diri Anda</p>
+                <div id="contact-form-area">
+                    <!-- Contact Form Start //-->
+                        <% if(flash && flash.err) { %>
+                      <ul class="alert alert-success" type="none">
+                        <% Object.keys(flash.err).forEach(function(error) { %>
+                          <li><%= JSON.stringify(flash.err[error]) %></li>
+                        <% }) %>
+                        </ul>
+                    <% } %>
+                    <form action="/user/update" > 
+                        <fieldset> 
+                        <label>Nama</label>
+                         <input type="text" class="textfield" id="ticket" value="<%=user.name%>" name="name" required>
+                         <label>No.HP</label>
+                         <input type="text" class="textfield" id="ticket" value="<%=user.nohp%>" name="nohp" required>
+                         <label>Email</label>
+                         <input type="text" class="textfield" id="ticket" value="<%=user.email%>" name="email" required>
+                         <label>Nama Bank</label>
+                         <input type="text" class="textfield" id="ticket" value="<%=user.namabank%>" name="namabank" required>
+                         <label>No. Rekening</label>
+                         <input type="text" class="textfield" id="ticket" value="<%=user.norek%>" name="norek" required>
+                         <label>Nama Rekening</label>
+                         <input type="text" class="textfield" id="ticket" value="<%=user.namarek%>" name="namarek" required>
+                         <label>PIN</label>
+                         <input type="password" class="textfield" id="ticket" value="<%=user.pin%>" name="pin" required>
+                         <label>Password Lama (Isi jika anda ingin mengubah password anda)</label>
+                         <input type="password" class="textfield" id="ticket" name="oldpass">
+                         <label>Password Baru (Isi jika anda ingin mengubah password anda)</label>
+                         <input type="password" class="textfield" id="ticket" name="newpass">
+                         <label>Konfirmasi Password Baru (Isi jika anda ingin mengubah password anda)</label>
+                         <input type="password" class="textfield" id="ticket" name="newpass2">
+                        <div class="clear"></div> 
+                        <label>&nbsp;</label>
+                        <a href="/user/editprofile"><button type="submit" class="buttoncontact" id="buttonsend">Edit Profilku</button></a>
+                        <span class="loading" style="display: none;">Please wait..</span>
+                        <div class="clear"></div>
+                        </fieldset> 
+                    </form>
+                    <!-- Contact Form End //-->
+                </div>  
+            </div>     
+        </div>              
+    </section>
