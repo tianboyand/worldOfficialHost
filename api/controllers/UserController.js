@@ -9,7 +9,7 @@ var nodemailer = require('nodemailer');
 var bcrypt = require('bcrypt');
 module.exports = {
 	create : function(req,res,next){
-		User.findOne({'id':req.session.User.ticket}, function(err,user){
+		User.findOne({'id':req.session.User.id}, function(err,user){
 			if(user.ticket<=0)
 			{
 				var requireLoginError = ['Tiket anda kurang.. Anda tidak bisa mendaftarkan akun orang lain. Harap ditambah.....'];
@@ -207,6 +207,7 @@ module.exports = {
 			username : req.session.User.username
 		}
 		Ph.find({'idUser':req.session.User.id}, function(err,phs){
+			if(err) return next(err);
 			for(var i=0;i<phs.length;i++)
 			{
 				if(!phs[i].verification)
@@ -219,6 +220,7 @@ module.exports = {
 				}
 			}
 			Gh.find({'idUser':req.session.User.id}, function(err,ghs){
+				if(err) return next(err);
 				for(var i=0;i<ghs.length;i++)
 				{
 					if(!ghs[i].verification)
