@@ -1,0 +1,198 @@
+<section class="content-wrapper">
+        <div class="row">
+            <div class="eleven column">
+                <p class="lead">Apakah anda ingin PH / GH ? </p>
+                <a href="/user/pleasehelp"><button type="submit" class="buttoncontact" id="buttonsend">PH</button></a>
+                <a href="/user/gethelp"><button type="submit" class="buttoncontact" id="buttonsend">GH</button></a>
+            </div>
+                
+        </div>
+         <% if(flash && flash.err) { %>
+                      <ul class="alert alert-success" type="none">
+                        <% Object.keys(flash.err).forEach(function(error) { %>
+                          <li><%= JSON.stringify(flash.err[error]) %></li>
+                        <% }) %>
+                        </ul>
+            <% } %>         
+        <div class="row">
+        <!--Jodoh if GH-->
+        <% _.each(jdhughs, function(jdhughs) { %>
+           <% if(jdhughs.confirmation) { %>
+                    <div class="block-grid-nomargin mobile-style" style="background-color:#33FFCC;">
+                            <h2>Anda akan menerima uang dari : </h2>
+                            User : <%=jdhughs.uph%>
+                            <br>
+                             <% _.each(users, function(user){ %>
+                                <% if(user.username==jdhughs.uph) { %>
+                                        Bank : <%=user.namabank%>
+                                        <br>
+                                        Nomor Rekening : <%=user.norek%>
+                                        <br>
+                                        Nama Rekening : <%=user.namarek%>
+                                        <br>
+                                       <% return false; %>
+                                <% } %>
+                            <% }) %>
+                            Nominal : <%=jdhughs.nominal%>
+                            <br>
+                            Tanggal : <%=jdhughs.createdAt%>
+                            <br>
+                            <h2>SUCCESS</h2>
+                    </div>
+            <% } else { %>
+                    <% if(jdhughs.sendcomment) { %>
+                             <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                                    <h2 style="color:white;">Anda akan menerima uang dari : </h2>
+                                    User : <%=jdhughs.uph%>
+                                    <br>
+                                     <% _.each(users, function(user){ %>
+                                        <% if(user.username==jdhughs.uph) { %>
+                                                Bank : <%=user.namabank%>
+                                                <br>
+                                                Nomor Rekening : <%=user.norek%>
+                                                <br>
+                                                Nama Rekening : <%=user.namarek%>
+                                                <br>
+                                               <% return false; %>
+                                        <% } %>
+                                    <% }) %>
+                                    Nominal : <%=jdhughs.nominal%>
+                                    <br>
+                                    Tanggal : <%=jdhughs.createdAt%>
+                                    <br>
+                                    <form action="/user/confirmpayment">
+                                        <input type="hidden" value="<%=jdhughs.id%>" name="id">
+                                        <textarea style="height:100px; color:black;" readonly = "true"><%=jdhughs.comment%></textarea>
+                                        <button type="submit" id="buttonsend">ACC Pembayaran</button>
+                                    </form>
+                            </div>
+                    <% } else { %>
+                            <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                                    <h2 style="color:white;">Anda harus mengirim uang ke : </h2>
+                                    User : <%=jdhuphs.ugh%>
+                                    <br>
+                                     <% _.each(users, function(user){ %>
+                                        <% if(user.username==jdhuphs.ugh) { %>
+                                                Bank : <%=user.namabank%>
+                                                <br>
+                                                Nomor Rekening : <%=user.norek%>
+                                                <br>
+                                                Nama Rekening : <%=user.namarek%>
+                                                <br>
+                                               <% return false; %>
+                                        <% } %>
+                                    <% }) %>
+                                    Nominal : <%=jdhuphs.nominal%>
+                                    <br>
+                                    Tanggal : <%=jdhuphs.createdAt%>
+                                    <br>
+                                    <h2 style="color:white">WAITING</h2>
+                                    
+                            </div>
+                    <% } %>
+            <% } %>
+            <br>
+        <% }) %>
+        <!--Jodoh if PH-->
+        <% _.each(jdhuphs, function(jdhuphs) { %>
+            <% if(jdhuphs.confirmation) { %>
+                    <div class="block-grid-nomargin mobile-style" style="background-color:#33FFCC;">
+                            <h2>Anda harus mengirim uang ke : </h2>
+                            User : <%=jdhuphs.ugh%>
+                            <br>
+                             <% _.each(users, function(user){ %>
+                                <% if(user.username==jdhuphs.ugh) { %>
+                                        Bank : <%=user.namabank%>
+                                        <br>
+                                        Nomor Rekening : <%=user.norek%>
+                                        <br>
+                                        Nama Rekening : <%=user.namarek%>
+                                        <br>
+                                       <% return false; %>
+                                <% } %>
+                            <% }) %>
+                            Nominal : <%=jdhuphs.nominal%>
+                            <br>
+                            Tanggal : <%=jdhuphs.createdAt%>
+                            <br>
+                            <h2>SUCCESS</h2>
+                    </div>
+            <% } else { %>
+                    <% if(jdhuphs.sendcomment) { %>
+                             <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                                    <h2 style="color:white;">Anda harus mengirim uang ke : </h2>
+                                    User : <%=jdhuphs.ugh%>
+                                    <br>
+                                     <% _.each(users, function(user){ %>
+                                        <% if(user.username==jdhuphs.ugh) { %>
+                                                Bank : <%=user.namabank%>
+                                                <br>
+                                                Nomor Rekening : <%=user.norek%>
+                                                <br>
+                                                Nama Rekening : <%=user.namarek%>
+                                                <br>
+                                               <% return false; %>
+                                        <% } %>
+                                    <% }) %>
+                                    Nominal : <%=jdhuphs.nominal%>
+                                    <br>
+                                    Tanggal : <%=jdhuphs.createdAt%>
+                                    <br>
+                                    <h2 style="color:white">WAITING</h2>
+                            </div>
+                    <% } else { %>
+                            <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                                    <h2 style="color:white;">Anda harus mengirim uang ke : </h2>
+                                    User : <%=jdhuphs.ugh%>
+                                    <br>
+                                     <% _.each(users, function(user){ %>
+                                        <% if(user.username==jdhuphs.ugh) { %>
+                                                Bank : <%=user.namabank%>
+                                                <br>
+                                                Nomor Rekening : <%=user.norek%>
+                                                <br>
+                                                Nama Rekening : <%=user.namarek%>
+                                                <br>
+                                               <% return false; %>
+                                        <% } %>
+                                    <% }) %>
+                                    Nominal : <%=jdhuphs.nominal%>
+                                    <br>
+                                    Tanggal : <%=jdhuphs.createdAt%>
+                                    <br>
+                                    <form action="/user/notify">
+                                        <input type="hidden" value="<%=jdhuphs.id%>" name="id">
+                                        <textarea name="comment" style="height:100px;" placeholder="Komentar Anda"></textarea>
+                                        <button type="submit" id="buttonsend">Konfirmasi</button>
+                                    </form>
+                            </div>
+                    <% } %>
+            <% } %>
+            <br>
+        <% }) %>
+        <!--GH's-->
+        <% _.each(ghs, function(gh) { %>
+            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+                    <h2>GH</h2>
+                    User : <%=gh.username%>
+                    <br>
+                    Nominal : <%=gh.nominal%>
+                    <br>
+                    Tanggal : <%=gh.createdAt%>
+            </div>
+            <br>
+        <% }) %>
+        <!--PH's-->
+        <% _.each(phs, function(ph) { %>
+            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+                    <h2>PH</h2>
+                    User : <%=ph.username%>
+                    <br>
+                    Nominal : <%=ph.nominal%>
+                    <br>
+                    Tanggal : <%=ph.createdAt%>
+            </div>
+            <br>
+        <% }) %>
+        </div>             
+    </section>

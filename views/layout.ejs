@@ -153,6 +153,18 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
                                 <li><a href="bonusmanager.html">Bonus Manager</a></li>
                             </ul>
                         </li> 
+                        <% if(session.authenticated) { %>
+                        <% if(session.User.admin) { %>
+                            <li><a href="/user/list">List PH/GH</a><span class="desc-menu">List PH/GH</span>
+                            </li>
+                            <li><a href="/user/history">Sejarah Jodoh</a><span class="desc-menu">Sejarah</span>
+                        </li>
+                        <% } else { %>
+                        <li><a href="/user/phgh">PH/GH</a><span class="desc-menu">PH/GH</span>
+                        </li>
+                        <% } %>
+                        <% } %>
+                       
                         <li><a href="/register">Register</a><span class="desc-menu">Member</span>
                         </li>
                         <li><a href="/user/home">Ticket</a><span class="desc-menu">Transfer</span></li>

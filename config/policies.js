@@ -36,6 +36,9 @@ module.exports.policies = {
       'profile' : ['sessionAuth','flash'],
       'editprofile' : ['sessionAuth','flash'],
       'update' : ['sessionAuth','flash'],
+      'phgh' : ['sessionAuth','flash'],
+      'list' : ['sessionAuth','flash'],
+      'history' : ['sessionAuth','flash']
   },
   auth : {
       'login' : 'flash'

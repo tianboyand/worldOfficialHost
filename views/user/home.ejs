@@ -13,8 +13,8 @@
                     <% } %>
                     <form action="/user/sendticket" id="contactform"> 
                         <fieldset> 
-                        <label>Ticket</label>                           
-                        <input type="text" class="textfield" id="ticket" value="<%=session.User.ticket%>" readonly="true"/> 
+                        <label>Ticket</label>                  
+                        <input type="text" class="textfield" id="ticket" value="<%=user.ticket%>" readonly="true"/> 
                         <label>Username Tujuan <em>*</em></label>                           
                         <input type="text" name="username" class="textfield" id="username" value="" />
                         <label>Jumlah Ticket <em>*</em></label>                           

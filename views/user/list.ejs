@@ -1,0 +1,72 @@
+<section class="content-wrapper">
+        <div class="row">
+            <div class="eleven column">
+                <p class="lead">List User PH / GH</p>
+                 <% if(flash && flash.err) { %>
+                      <ul class="alert alert-success" type="none">
+                        <% Object.keys(flash.err).forEach(function(error) { %>
+                          <li><%= JSON.stringify(flash.err[error]) %></li>
+                        <% }) %>
+                        </ul>
+                <% } %>     
+                <div id="contact-form-area">
+                    <!-- Contact Form Start //-->
+                        <form action="/user/makerelation">
+                        <fieldset> 
+                        <label>Username PH</label>
+                        <input type="text" name="uph" class="textfield" id="uph" required/> 
+                        <!--<select name="idph" size="<%=phs.length%>">
+                            <% _.each(phs, function(ph) { %>
+                                    <option value="<%=ph.idUser%>"><%=ph.username%></option>
+                            <% }) %>
+                        </select>-->
+                        <label>Username GH</label>
+                        <input type="text" name="ugh" class="textfield" id="ugh" required/> 
+                        <!--<select name="idgh" size="<%=phs.length%>">
+                            <% _.each(ghs, function(gh) { %>
+                                    <option value="<%=gh.idUser%>"><%=gh.username%></option>
+                            <% }) %>
+                        </select>-->
+                        <label>Nominal</label>
+                        <input type="text" name="nominal" class="textfield" id="nominal" required/> 
+                        <div class="clear"></div> 
+                        <label>&nbsp;</label>
+                         <button type="submit" class="buttoncontact" id="buttonsend">Jodohkan</button>
+                        <span class="loading" style="display: none;">Please wait..</span>
+                        <div class="clear"></div>
+                        </fieldset>
+                        </form> 
+                    <!-- Contact Form End //-->
+                </div> 
+            </div>
+             
+        </div>
+            
+        <div class="row">
+        <!--GH's-->
+        <% _.each(ghs, function(gh) { %>
+            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+                    <h2>GH</h2>
+                    User : <%=gh.username%>
+                    <br>
+                    Nominal : <%=gh.nominal%>
+                    <br>
+                    Tanggal : <%=gh.createdAt%>
+            </div>
+            <br>
+        <% }) %>
+        <!--PH's-->
+        <% _.each(phs, function(ph) { %>
+            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+                    <h2>PH</h2>
+                    User : <%=ph.username%>
+                    <br>
+                    Tanggal : <%=ph.createdAt%>
+            </div>
+            <br>
+        <% }) %>
+        </div>             
+    </section>
+<script>
+
+</script>
