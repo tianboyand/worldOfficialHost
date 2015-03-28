@@ -462,7 +462,8 @@ font-weight:300;
 .table-white th{background:#fff; color:#828282 !important; text-shadow:none; border-bottom: 1px solid #e6e6e6; border-top: 1px solid #e6e6e6;}
 table tr.even td,table tr.odd td {background-color:#fff;}
 table tr td.highlight,.table-black table tr th {background-color:#f9f9f9;}
-
+table tr.blue td{background-color: #6666FF; color:white;}
+table tr.red td{background-color: #CC3399; color:white;}
 /***** To Top *****/
 #toTop {
 display:none;

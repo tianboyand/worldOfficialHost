@@ -1,0 +1,96 @@
+<section class="content-wrapper">       
+        <div class="row">
+            <div class="twelve column"> 
+                <h3 class="smallmargin-bottom">List Referral</h3>
+            </div>
+            <div class="twelve column"> 
+                <table class="table-green">
+                  <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Username</th>
+                        <th>Register Date</th>
+                        <th>Nominal Bonus</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% var no = 1; %>
+                      <% _.each(usersref, function(user) { %>
+                                <% var state = false; %>
+                                <% _.each(phs, function(ph) { %>
+                                      <% if(ph.username==user.username && ph.verification) { %>
+                                              <% state = true; %>
+                                              <% return false; %>
+                                      <% } %>
+                                <% }) %>
+                                <% if(state) { %>
+                                           <tr class="blue">
+                                            <td><%=no%></td>
+                                            <td><%=user.username%></td>
+                                            <td><%=user.createdAt%></td>
+                                            <td>Rp. 200.000</td>
+                                          </tr>
+                                <% } else { %>
+                                            <tr class="red">
+                                              <td><%=no%></td>
+                                              <td><%=user.username%></td>
+                                              <td><%=user.createdAt%></td>
+                                              <td>Rp. 200.000</td>
+                                            </tr>
+                                <% } %>
+                                <% no = no +1; %>
+                        <% }) %>                                                     
+                  </tbody>
+                </table>    
+            </div>
+            <div class="twelve column"> 
+                <h3 class="smallmargin-bottom">List Team</h3>
+            </div>
+            <div class="twelve column">
+                <table class="table-blue">
+                  <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Username</th>
+                        <th>Register Date</th>
+                        <th>Nominal Bonus</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% var no = 1; %>
+                      <% var team = user.team; %>
+                      <% for(var i=0;i<team.length;i++) { %>
+                                <% _.each(users, function(user) { %>
+                                        <% if(user.username==team[i]) { %>
+                                                <% var state = false; %>
+                                                <% _.each(phs, function(ph) { %>
+                                                      <% if(ph.username==team[i] && ph.verification) { %>
+                                                              <% state = true; %>
+                                                              <% return false; %>
+                                                      <% } %>
+                                                <% }) %>
+                                                <% if(state) { %>
+                                                           <tr class="blue">
+                                                            <td><%=no%></td>
+                                                            <td><%=team[i]%></td>
+                                                            <td><%=user.createdAt%></td>
+                                                            <td>Rp. 100.000</td>
+                                                          </tr>
+                                                <% } else { %>
+                                                            <tr class="red">
+                                                              <td><%=no%></td>
+                                                              <td><%=team[i]%></td>
+                                                              <td><%=user.createdAt%></td>
+                                                              <td>Rp. 100.000</td>
+                                                            </tr>
+                                                <% } %>
+                                                <% no = no +1; %>
+                                        <% } %>
+                                <% }) %>
+                        <% } %>                                                          
+                  </tbody>
+                </table>    
+            </div>
+            
+        </div>             
+    </section>

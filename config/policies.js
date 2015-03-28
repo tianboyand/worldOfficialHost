@@ -38,7 +38,17 @@ module.exports.policies = {
       'update' : ['sessionAuth','flash'],
       'phgh' : ['sessionAuth','flash'],
       'list' : ['sessionAuth','flash'],
-      'history' : ['sessionAuth','flash']
+      'history' : ['sessionAuth','flash'],
+      'team' : ['sessionAuth','flash'],
+      'pleasehelp' : ['sessionAuth','flash'],
+      'gethelp' : ['sessionAuth','flash'],
+      'makerelation' : ['sessionAuth','flash'],
+      'confirmpayment' : ['sessionAuth','flash'],
+      'notify' : ['sessionAuth','flash'],
+      'bonussponsor' : ['sessionAuth','flash'],
+      'bonusmanager' : ['sessionAuth','flash'],
+      'gethelpbonus' : ['sessionAuth','flash'],
+      'gethelpmanager' : ['sessionAuth','flash'],
   },
   auth : {
       'login' : 'flash'

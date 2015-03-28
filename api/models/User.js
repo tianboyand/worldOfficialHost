@@ -17,13 +17,23 @@ module.exports = {
   		defaultsTo : false
   	},
   	ticket : 'integer',
-  	saldo : 'integer',
+  	sponsor : 'integer',
+      manager : 'integer',
   	encryptedId : 'string',
   	nohp : 'string',
   	namabank : 'string',
   	norek : 'string',
   	namarek : 'string',
-  	pin : 'string'
+  	pin : 'string',
+      add : {
+          type : 'array',
+          defaultsTo : []
+      },
+      team : {
+          type : 'array',
+          defaultsTo : []
+      },
+      ref : 'string'
   }
 };
 

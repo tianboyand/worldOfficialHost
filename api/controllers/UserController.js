@@ -70,6 +70,18 @@ module.exports = {
 					}
 					bcrypt.hash(req.param('password'), 10, function passwordEncrypted(err, encryptedPassword) {
 					      if (err) return next(err);
+					      var add = user.add;
+					      for(var i=0;i<add.length;i++)
+					      {
+					      	User.findOne({'username':add[i]}, function(err,tmpuser){
+					      		if(err) return next(err);
+					      		var team = tmpuser.team;
+					      		team.push(req.param("username"));
+					      		User.update(tmpuser.id, {'team':team}, function(err,upduser){});
+					      	});
+					      }
+					      var tmpadd = add;
+					      tmpadd.push(user.username);
 					      var usrObj = {
 							name : req.param('name'),
 							username : req.param('username'),
@@ -77,7 +89,11 @@ module.exports = {
 							email : req.param('email'),
 							admin : false,
 							ticket : 0,
-							saldo : 0,
+							sponsor : 0,
+							manager : 0,
+							ref : req.session.User.id,
+							add : tmpadd,
+							team : [],
 							nohp : req.param('nomorhp'),
 							namabank:req.param('bank'),
 							norek : req.param('rekening'),
@@ -110,6 +126,26 @@ module.exports = {
 			});
 		});
 	},
+	team : function(req,res,next){
+		User.findOne(req.session.User.id, function(err,user){
+			if(err) return next(err);
+			User.find({'ref':user.id}, function(err,usersref){
+				if(err) return next(err);
+				Ph.find(function(err,phs){
+					if(err) return next(err);
+					User.find(function(err,users){
+						if(err) return next(err);
+						res.view({
+							user:user,
+							usersref : usersref,
+							phs : phs,
+							users : users
+						});
+					});
+				});
+			});
+		});	
+	},
 	history : function(req,res,next){
 		if(!req.session.User.admin)
 		{
@@ -127,9 +163,9 @@ module.exports = {
 			if(err) return next(err);
 			Gh.find({'idUser':req.session.User.id}, {sort : 'createdAt DESC'}, function(err,ghs){
 				if(err) return next(err);
-				Jodoh.find({'uph':req.session.User.username}, function(err, jdhuphs){
+				Jodoh.find({'uph':req.session.User.username}, {sort: 'createdAt DESC'}, function(err, jdhuphs){
 					User.find(function(err,users){
-						Jodoh.find({'ugh':req.session.User.username}, function(err, jdhughs){
+						Jodoh.find({'ugh':req.session.User.username},  {sort: 'createdAt DESC'}, function(err, jdhughs){
 							res.view({
 								phs : phs,
 								ghs : ghs,
@@ -203,11 +239,12 @@ module.exports = {
 		var usrObj = {
 			idUser : req.session.User.id,
 			verification : false,
-			nominal : 1000000,
+			nominal : 1500000,
 			username : req.session.User.username
 		}
 		Ph.find({'idUser':req.session.User.id}, function(err,phs){
 			if(err) return next(err);
+			var state = false;
 			for(var i=0;i<phs.length;i++)
 			{
 				if(!phs[i].verification)
@@ -218,6 +255,19 @@ module.exports = {
 					  }
 					   return res.redirect('/user/phgh');
 				}
+				else
+				{
+					state=true;
+				}
+			}
+			if(req.session.User.admin)
+				state=true;
+			if(!state) {
+				var requireLoginError = ['Anda belum pernah melakukan PH.. Silakan PH terlebih dahulu...'];
+				req.session.flash = {
+					  	err: requireLoginError
+				}
+				return res.redirect('/user/phgh');
 			}
 			Gh.find({'idUser':req.session.User.id}, function(err,ghs){
 				if(err) return next(err);
@@ -317,16 +367,164 @@ module.exports = {
 		}
 		Jodoh.findOne({'id':usrObj.id}, function(err,jodoh){
 			if(err) return next(err);
+			if(jodoh.confirmation)
+			{
+				return res.redirect('/user/phgh');
+			}
 			Ph.update({'username': jodoh.uph}, {'verification':true}, function(err,ph){
 				if(err) return next(err);
 				Gh.update({'username':jodoh.ugh}, {'verification':true}, function(err,gh){
 					if(err) return next(err);
-					Jodoh.update(jodoh.id, {'confirmation':true}, function(err, jodoh){
-						if(err) return next(err);
-						return res.redirect('/user/phgh');
+					Jodoh.update(jodoh.id, {'confirmation':true}, function(err, jodoh1){
+						User.findOne({'username':jodoh.uph}, function(err,user1){
+							User.findOne({'id' : user1.ref}, function(err,user){
+								if(err) return next(err);
+								var bonus = user.sponsor;
+								bonus +=200000;
+								User.update(user.id, {'sponsor': bonus}, function(err,userupd){});
+								User.find(function(err, users){
+									if(err) return next(err);
+									for(var i=0;i<users.length;i++)
+									{
+										var team = users[i].team;
+										for(var j=0;j<team.length;j++)
+										{
+											if(team[j]==jodoh.uph)
+											{
+												var bns = users[i].manager;
+												bns +=100000;
+												User.update({'id':users[i].id}, {'manager':bns}, function(err,userupdt){});
+												break;
+											}
+										}
+									}
+									return res.redirect('/user/phgh');	
+								});
+							});	
+						});
 					});
 				});
 			});
+		});
+	},
+	bonussponsor : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			if(err) return next(err);
+			res.view({
+				user:user
+			});	
+		});
+	},
+	gethelpmanager : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			var tmp = req.param('nominalgh');
+			for(var i=0;i<tmp.length;i++)
+			{
+				if(tmp[i]<'0' || tmp[i]>'9')
+				{	
+				var requireLoginError = ['Masukkan nominal berupa angka....!!!!'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmanager');
+				}
+			}
+			var money = parseInt(tmp);
+			if(money<100000 || money>user.manager)
+			{
+				var requireLoginError = ['Nominal harus diantara Rp. 100.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmanager');
+			}
+			var usrObj = {
+				idUser : req.session.User.id,
+				verification : false,
+				nominal : money,
+				username : req.session.User.username
+			}
+			var saldo = user.manager- money;
+			User.update(user.id, {'manager': saldo}, function(err,user){
+				if(err) return next(err);
+				Gh.create(usrObj, function(err,gh){
+					if(err) return next(err);
+					var requireLoginError = ['Anda berhasil melakukan GH terhadap permintaan bonus anda...'];
+					  req.session.flash = {
+					  	err: requireLoginError
+					  }
+					return res.redirect('/user/bonusmanager');	
+				});
+			});
+		});
+	},
+	gethelpsponsor : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			if(err) return next(err);
+			var tmp = req.param('nominalgh');
+			for(var i=0;i<tmp.length;i++)
+			{
+				if(tmp[i]<'0' || tmp[i]>'9')
+				{	
+				var requireLoginError = ['Masukkan nominal berupa angka....!!!!'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonussponsor');
+				}
+			}
+			var money = parseInt(tmp);
+			if(money<100000 || money>user.sponsor)
+			{
+				var requireLoginError = ['Nominal harus diantara Rp. 100.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonussponsor');
+			}
+			var usrObj = {
+				idUser : req.session.User.id,
+				verification : false,
+				nominal : money,
+				username : req.session.User.username
+			}
+			var saldo = user.sponsor - money;
+			User.update(user.id, {'sponsor': saldo}, function(err,user){
+				if(err) return next(err);
+				Gh.create(usrObj, function(err,gh){
+					if(err) return next(err);
+					var requireLoginError = ['Anda berhasil melakukan GH terhadap permintaan bonus anda...'];
+					  req.session.flash = {
+					  	err: requireLoginError
+					  }
+					return res.redirect('/user/bonussponsor');	
+				});
+			});
+		});
+	},
+
+	bonusmanager : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			var usrObj;
+			User.find({'ref':req.session.User.id}, function(err,users){
+				if(err) return next(err);
+				if(users.length>=10)
+				{	
+					usrObj = {
+						state : true
+					}
+				}
+				else
+				{
+					usrObj = {
+						state : false
+					}
+				}
+				res.view({
+					user : user,
+					usrObj : usrObj
+				});
+			});	
 		});
 	},
 	notify : function(req,res,next){

@@ -145,24 +145,26 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
                     <ul id="menu">
                         <li><a href="/">Home</a><span class="desc-menu">It's our home</span>
                         </li>                                                   
-                        <li><a href="/team">Team</a><span class="desc-menu">List</span>
+                        <li><a href="/user/team">Team</a><span class="desc-menu">List</span>
                         </li>
                         <li class="dropdown"><a href="#">GH Bonus</a><span class="desc-menu">Total</span>
                             <ul> 
-                                <li><a href="bonussponsor.html">Bonus Sponsor</a></li>
-                                <li><a href="bonusmanager.html">Bonus Manager</a></li>
+                                <li><a href="/user/bonussponsor">Bonus Sponsor</a></li>
+                                <li><a href="/user/bonusmanager">Bonus Manager</a></li>
                             </ul>
                         </li> 
                         <% if(session.authenticated) { %>
-                        <% if(session.User.admin) { %>
-                            <li><a href="/user/list">List PH/GH</a><span class="desc-menu">List PH/GH</span>
-                            </li>
-                            <li><a href="/user/history">Sejarah Jodoh</a><span class="desc-menu">Sejarah</span>
-                        </li>
-                        <% } else { %>
                         <li><a href="/user/phgh">PH/GH</a><span class="desc-menu">PH/GH</span>
                         </li>
-                        <% } %>
+                        <% if(session.User.admin) { %>
+                            <li class="dropdown"><a href="#">Dashboard</a><span class="desc-menu">Admin's</span>
+                                <ul>
+                                    <li><a href="/user/list">List PH/GH</a></li>
+                                    <li><a href="/user/history">Sejarah Jodoh</a></li>
+                                </ul>
+                            </li>
+                            
+                        <% } %>      
                         <% } %>
                        
                         <li><a href="/register">Register</a><span class="desc-menu">Member</span>

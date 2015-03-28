@@ -16,6 +16,10 @@
             <% } %>         
         <div class="row">
         <!--Jodoh if GH-->
+        <h3>Notifikasi GH</h3>
+        <% if(jdhughs.length==0) { %>
+                Belum ada Notifikasi GH...
+        <% } else { %>
         <% _.each(jdhughs, function(jdhughs) { %>
            <% if(jdhughs.confirmation) { %>
                     <div class="block-grid-nomargin mobile-style" style="background-color:#33FFCC;">
@@ -68,11 +72,11 @@
                             </div>
                     <% } else { %>
                             <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
-                                    <h2 style="color:white;">Anda harus mengirim uang ke : </h2>
-                                    User : <%=jdhuphs.ugh%>
+                                    <h2 style="color:white;">Anda akan menerima uang dari : </h2>
+                                    User : <%=jdhughs.uph%>
                                     <br>
                                      <% _.each(users, function(user){ %>
-                                        <% if(user.username==jdhuphs.ugh) { %>
+                                        <% if(user.username==jdhughs.uph) { %>
                                                 Bank : <%=user.namabank%>
                                                 <br>
                                                 Nomor Rekening : <%=user.norek%>
@@ -82,9 +86,9 @@
                                                <% return false; %>
                                         <% } %>
                                     <% }) %>
-                                    Nominal : <%=jdhuphs.nominal%>
+                                    Nominal : <%=jdhughs.nominal%>
                                     <br>
-                                    Tanggal : <%=jdhuphs.createdAt%>
+                                    Tanggal : <%=jdhughs.createdAt%>
                                     <br>
                                     <h2 style="color:white">WAITING</h2>
                                     
@@ -93,7 +97,12 @@
             <% } %>
             <br>
         <% }) %>
+        <% } %>
+        <h3>Notifikasi PH</h3>
         <!--Jodoh if PH-->
+        <% if(jdhuphs.length==0) { %>
+                Belum ada Notifikasi PH....
+        <% } else { %>
         <% _.each(jdhuphs, function(jdhuphs) { %>
             <% if(jdhuphs.confirmation) { %>
                     <div class="block-grid-nomargin mobile-style" style="background-color:#33FFCC;">
@@ -170,7 +179,12 @@
             <% } %>
             <br>
         <% }) %>
+        <% } %>
         <!--GH's-->
+        <h3>Sejarah GH anda </h3>
+        <% if(ghs.length==0) { %>
+                Belum ada sejarah GH.....
+        <% } else { %>
         <% _.each(ghs, function(gh) { %>
             <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
                     <h2>GH</h2>
@@ -182,7 +196,12 @@
             </div>
             <br>
         <% }) %>
+        <% } %>
         <!--PH's-->
+        <h3>Sejarah PH anda </h3>
+        <% if(phs.length==0) { %>
+                Belum ada sejarah PH.....
+        <% } else { %>
         <% _.each(phs, function(ph) { %>
             <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
                     <h2>PH</h2>
@@ -194,5 +213,6 @@
             </div>
             <br>
         <% }) %>
+        <% } %>
         </div>             
     </section>
