@@ -19,12 +19,13 @@ module.exports = {
   	ticket : 'integer',
   	sponsor : 'integer',
       manager : 'integer',
+      multiple : 'integer',
   	encryptedId : 'string',
   	nohp : 'string',
   	namabank : 'string',
   	norek : 'string',
   	namarek : 'string',
-  	pin : 'string',
+  	//pin : 'string',
       add : {
           type : 'array',
           defaultsTo : []

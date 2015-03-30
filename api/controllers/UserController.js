@@ -18,7 +18,7 @@ module.exports = {
 					}
 				return res.redirect('/register');
 			}
-			if(req.param('name')=="" || req.param("username")=="" || req.param("password")=="" || req.param('email')=="" || req.param("nomorhp")=="" || req.param("rekening")=="" || req.param("bank")=="" || req.param("norek")=="" || req.param("namarek")=="" || req.param("pin")=="" || req.param("pin").length!=6 || (req.param("pin")!=req.param("pin2")))
+			if(req.param('name')=="" || req.param("username")=="" || req.param("password")=="" || req.param('email')=="" || req.param("nomorhp")=="" || req.param("rekening")=="" || req.param("bank")=="" || req.param("norek")=="" || req.param("namarek")=="" )
 			{
 				var requireLoginError = ['Terjadi kesalahan dalam pemasukan data..'];
 					  req.session.flash = {
@@ -26,12 +26,12 @@ module.exports = {
 					  }
 				return res.redirect('/register');
 			}
-			var tmp = req.param("pin");
+			var tmp = req.param("rekening");
 			for(var i=0;i<tmp.length;i++)
 			{
 				if(tmp[i]<'0' && tmp[i]>'9')
 				{
-					var requireLoginError = ['PIN harus berisi 6 Angka'];
+					var requireLoginError = ['Nomor Rekening harus diisikan dengan angka'];
 					req.session.flash = {
 						err: requireLoginError
 					}
@@ -98,7 +98,7 @@ module.exports = {
 							namabank:req.param('bank'),
 							norek : req.param('rekening'),
 							namarek : req.param('namarek'),
-							pin : req.param('pin')
+							//pin : req.param('pin')
 					       }
 					       User.create(usrObj, function(err,user3){
 					       	if(err) return next(err);
@@ -110,15 +110,37 @@ module.exports = {
 					       	}
 					       	else
 					       	{
-					       		User.update({'id':req.session.User.id}, {'ticket':user.ticket-1}, function(err,user4){
-					       			if(err) return next(err);
-					       			req.session.User.ticket -=1;
-					       			var requireLoginError = ['Berhasil diregistrasi'];
-								  req.session.flash = {
-								  	err: requireLoginError
-								}
-					       			return res.redirect('/user/home');
-					       		});
+					       		var userObj = {
+					       			idUser : user3.id,
+					       			username : req.param('username'),
+					       			verification : false,
+					       			nominal : 1000000
+					       		}
+					     		User.find({'ref':req.session.User.id}, function(err,users){
+					     			if(err) return next(err);
+					     			var bnsmulti = user.multiple;
+								var jlh = users.length;
+								if(jlh%4==0)
+									bnsmulti += ((jlh/4)*500000);
+								if(jlh%10==0)
+									bnsmulti += ((jlh/10)*1000000);
+								if(jlh%20==0)
+									bnsmulti += ((jlh/20)*2000000);
+								User.update({'id':req.session.User.id}, {'ticket':user.ticket-1, multiple: bnsmulti}, function(err,user4){
+						       			if(err) return next(err);
+						       			req.session.User.ticket -=1;
+						       			Ph.create(userObj, function(err,ph){
+						       				if(err) return next(err);
+						       				var requireLoginError = ['Berhasil diregistrasi'];
+										  req.session.flash = {
+										  	err: requireLoginError
+										}
+							       			return res.redirect('/user/home');
+						       			});
+						       			
+						       		});
+
+					     		});
 					       	}
 					       });
 					});
@@ -336,27 +358,48 @@ module.exports = {
 						}
 						return res.redirect('/user/list');	
 					}
-					//Ph.update(ph.id, {'verification':true}, function(err,ph1){
-						//Gh.update(gh.id, {'verification':true}, function(err,gh1){
-							var usrObj = {
-								ugh : req.param('ugh'),
-								uph : req.param('uph'),
-								nominal : req.param('nominal'),
-								confirmation : false,
-								comment : '',
-								sendcomment : false,
+					Jodoh.find({'ugh':req.param('ugh'), 'confirmation': false}, function(err,jodohs){
+						if(err) return next(err);
+						var tmp = 0;
+						for(var i=0;i<jodohs.length;i++)
+						{
+							tmp+=jodohs[i].nominal;
+						}
+						if(tmp>=1500000)
+						{
+							var requireLoginError = ['Total nominal penjodohan ini sudah capai 1.500.000'];
+							req.session.flash = {
+								err: requireLoginError
 							}
-							Jodoh.create(usrObj, function(err,jodoh){
-								if(err) return next(err);
-								var requireLoginError = ['Berhasil menjodohkan...!!!!'];
-								req.session.flash = {
-									err: requireLoginError
+							return res.redirect('/user/list');
+						}
+						//Ph.update(ph.id, {'verification':true}, function(err,ph1){
+							//Gh.update(gh.id, {'verification':true}, function(err,gh1){
+								var x = 0;
+								while(x<100)
+								{
+									x = Math.floor((Math.random()*1000)+1);
 								}
-								return res.redirect('/user/list');
-							});	
+								var nominal = x+500000;
+								var usrObj = {
+									ugh : req.param('ugh'),
+									uph : req.param('uph'),
+									nominal : nominal,
+									confirmation : false,
+									comment : '',
+									sendcomment : false,
+								}
+								Jodoh.create(usrObj, function(err,jodoh){
+									if(err) return next(err);
+									var requireLoginError = ['Berhasil menjodohkan...!!!!'];
+									req.session.flash = {
+										err: requireLoginError
+									}
+									return res.redirect('/user/list');
+								});	
+							//});
 						//});
-					//});
-								
+					});			
 				});
 			});
 		});
@@ -380,7 +423,7 @@ module.exports = {
 							User.findOne({'id' : user1.ref}, function(err,user){
 								if(err) return next(err);
 								var bonus = user.sponsor;
-								bonus +=200000;
+								bonus +=100000;
 								User.update(user.id, {'sponsor': bonus}, function(err,userupd){});
 								User.find(function(err, users){
 									if(err) return next(err);
@@ -398,7 +441,20 @@ module.exports = {
 											}
 										}
 									}
-									return res.redirect('/user/phgh');	
+									var userObj = {
+										idUser : req.session.User.id,
+										username : req.session.User.username,
+										verification : false,
+										nominal : 1000000
+									}
+									Ph.create(userObj, function(err,ph){
+										if(err) return next(err);
+										var requireLoginError = ['Konfirmasi berhasil dan anda langsung dihadapkan dengan PH....'];
+										req.session.flash = {
+											err: requireLoginError
+										}
+										return res.redirect('/user/phgh');
+									});
 								});
 							});	
 						});
@@ -430,9 +486,17 @@ module.exports = {
 				}
 			}
 			var money = parseInt(tmp);
-			if(money<100000 || money>user.manager)
+			if(money<500000 || money>user.manager)
 			{
-				var requireLoginError = ['Nominal harus diantara Rp. 100.000 sampai batas bonus anda....'];
+				var requireLoginError = ['Nominal harus diantara Rp. 500.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmanager');
+			}
+			if(money % 500000!=0)
+			{
+				var requireLoginError = ['Nominal harus merupakan kelipatan Rp. 500.000'];
 				  req.session.flash = {
 				  	err: requireLoginError
 				  }
@@ -474,9 +538,17 @@ module.exports = {
 				}
 			}
 			var money = parseInt(tmp);
-			if(money<100000 || money>user.sponsor)
+			if(money<500000 || money>user.sponsor)
 			{
-				var requireLoginError = ['Nominal harus diantara Rp. 100.000 sampai batas bonus anda....'];
+				var requireLoginError = ['Nominal harus diantara Rp. 500.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonussponsor');
+			}
+			if(money % 500000!=0)
+			{
+				var requireLoginError = ['Nominal harus merupakan kelipatan Rp. 500.000'];
 				  req.session.flash = {
 				  	err: requireLoginError
 				  }
@@ -498,6 +570,58 @@ module.exports = {
 					  	err: requireLoginError
 					  }
 					return res.redirect('/user/bonussponsor');	
+				});
+			});
+		});
+	},
+	gethelpmultiple : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			if(err) return next(err);
+			var tmp = req.param('nominalgh');
+			for(var i=0;i<tmp.length;i++)
+			{
+				if(tmp[i]<'0' || tmp[i]>'9')
+				{	
+				var requireLoginError = ['Masukkan nominal berupa angka....!!!!'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+				}
+			}
+			var money = parseInt(tmp);
+			if(money<500000 || money>user.sponsor)
+			{
+				var requireLoginError = ['Nominal harus diantara Rp. 500.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+			}
+			if(money % 500000!=0)
+			{
+				var requireLoginError = ['Nominal harus merupakan kelipatan Rp. 500.000'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+			}
+			var usrObj = {
+				idUser : req.session.User.id,
+				verification : false,
+				nominal : money,
+				username : req.session.User.username
+			}
+			var saldo = user.sponsor - money;
+			User.update(user.id, {'sponsor': saldo}, function(err,user){
+				if(err) return next(err);
+				Gh.create(usrObj, function(err,gh){
+					if(err) return next(err);
+					var requireLoginError = ['Anda berhasil melakukan GH terhadap permintaan bonus anda...'];
+					  req.session.flash = {
+					  	err: requireLoginError
+					  }
+					return res.redirect('/user/bonusmultiple');	
 				});
 			});
 		});
@@ -525,6 +649,14 @@ module.exports = {
 					usrObj : usrObj
 				});
 			});	
+		});
+	},
+	bonusmultiple : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			if(err) return next(err);
+			res.view({
+				user:user
+			});
 		});
 	},
 	notify : function(req,res,next){
@@ -714,7 +846,7 @@ module.exports = {
 			}
 			return res.redirect('/user/editprofile');
 		}
-		if(req.param('namabank')=="")
+		/*if(req.param('namabank')=="")
 		{ 
 			var requireLoginError = ['Harap isi nama bank anda'];
 			req.session.flash = {
@@ -737,7 +869,7 @@ module.exports = {
 				err: requireLoginError
 			}
 			return res.redirect('/user/editprofile');
-		}
+		}*/
 		User.findOne({'email':req.param('email')}, function(err,user){
 			if(err) return next(err);
 			if(user && user.id!=req.session.User.id) {
@@ -747,7 +879,7 @@ module.exports = {
 						 }
 				return res.redirect('/user/editprofile');
 			}
-			if(req.param('pin')=="" || req.param("pin").length!=6)
+			/*if(req.param('pin')=="" || req.param("pin").length!=6)
 			{
 				var requireLoginError = ['PIN harus berisi 6 Angka'];
 						  req.session.flash = {
@@ -766,7 +898,7 @@ module.exports = {
 				}
 				return res.redirect('/user/editprofile');
 				}
-			}
+			}*/
 			if(req.param('oldpass')=="" || req.param('newpass')=="" )
 			{
 				pass=req.session.User.encryptedPassword;
@@ -774,10 +906,10 @@ module.exports = {
 					name : req.param('name'),
 					nohp : req.param('nohp'),
 					email : req.param('email'),
-					namarek : req.param('namarek'),
-					norek : req.param('norek'),
-					namabank : req.param('namabank'),
-					pin : req.param('pin'),
+					//namarek : req.param('namarek'),
+					//norek : req.param('norek'),
+					//namabank : req.param('namabank'),
+					//pin : req.param('pin'),
 					encryptedPassword : pass
 				}
 				User.update({'id':req.session.User.id}, usrObj, function(err,user){
@@ -815,10 +947,10 @@ module.exports = {
 							name : req.param('name'),
 							nohp : req.param('nohp'),
 							email : req.param('email'),
-							namarek : req.param('namarek'),
-							norek : req.param('norek'),
-							namabank : req.param('namabank'),
-							pin : req.param('pin'),
+							//namarek : req.param('namarek'),
+							//norek : req.param('norek'),
+							//namabank : req.param('namabank'),
+							//pin : req.param('pin'),
 							encryptedPassword : pass
 						}
 						User.update({'id':req.session.User.id}, usrObj, function(err,user){
