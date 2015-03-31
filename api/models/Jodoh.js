@@ -11,6 +11,7 @@ module.exports = {
   	ugh : 'string',
   	uph : 'string',
   	nominal : 'integer',
+      value : 'integer',
   	confirmation : {
   		type : 'boolean',
   		defaultsTo : false

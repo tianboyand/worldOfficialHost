@@ -384,7 +384,8 @@ module.exports = {
 								var usrObj = {
 									ugh : req.param('ugh'),
 									uph : req.param('uph'),
-									nominal : nominal,
+									nominal : 500000,
+									value : nominal,
 									confirmation : false,
 									comment : '',
 									sendcomment : false,
