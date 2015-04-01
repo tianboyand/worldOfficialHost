@@ -2,8 +2,8 @@
         <div class="row">
             <div class="eleven column">
                 <p class="lead">Apakah anda ingin PH / GH ? </p>
-                <a href="/user/pleasehelp"><button type="submit" class="buttoncontact" id="buttonsend">PH</button></a>
-                <a href="/user/gethelp"><button type="submit" class="buttoncontact" id="buttonsend">GH</button></a>
+                <a href="/user/pleasehelp"><button type="submit" class="button large blue" id="buttonsend">PH</button></a>
+                <a href="/user/gethelp"><button type="submit" class="button large red" id="buttonsend">GH</button></a>
             </div>
                 
         </div>
@@ -16,13 +16,12 @@
             <% } %>         
         <div class="row">
         <!--Jodoh if GH-->
-        <h3>Notifikasi GH</h3>
         <% if(jdhughs.length==0) { %>
-                Belum ada Notifikasi GH...
+            
         <% } else { %>
         <% _.each(jdhughs, function(jdhughs) { %>
            <% if(jdhughs.confirmation) { %>
-                    <div class="block-grid-nomargin mobile-style" style="background-color:#33FFCC;">
+                    <div class="eight column note-folded blue" style="margin: 12px;">
                             <h2>Anda akan menerima uang dari : </h2>
                             User : <%=jdhughs.uph%>
                             <br>
@@ -45,7 +44,7 @@
                     </div>
             <% } else { %>
                     <% if(jdhughs.sendcomment) { %>
-                             <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                             <div class="eight column note-folded grey" style="margin: 12px;">
                                     <h2 style="color:white;">Anda akan menerima uang dari : </h2>
                                     User : <%=jdhughs.uph%>
                                     <br>
@@ -71,7 +70,7 @@
                                     </form>
                             </div>
                     <% } else { %>
-                            <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                            <div class="eight column note-folded red" style="margin: 12px;">
                                     <h2 style="color:white;">Anda akan menerima uang dari : </h2>
                                     User : <%=jdhughs.uph%>
                                     <br>
@@ -98,14 +97,12 @@
             <br>
         <% }) %>
         <% } %>
-        <h3>Notifikasi PH</h3>
         <!--Jodoh if PH-->
         <% if(jdhuphs.length==0) { %>
-                Belum ada Notifikasi PH....
         <% } else { %>
         <% _.each(jdhuphs, function(jdhuphs) { %>
             <% if(jdhuphs.confirmation) { %>
-                    <div class="block-grid-nomargin mobile-style" style="background-color:#33FFCC;">
+                    <div class="eight column note-folded blue" style="margin: 12px;">
                             <h2>Anda harus mengirim uang ke : </h2>
                             User : <%=jdhuphs.ugh%>
                             <br>
@@ -128,7 +125,7 @@
                     </div>
             <% } else { %>
                     <% if(jdhuphs.sendcomment) { %>
-                             <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                             <div class="eight column note-folded red" style= "margin: 12px;">
                                     <h2 style="color:white;">Anda harus mengirim uang ke : </h2>
                                     User : <%=jdhuphs.ugh%>
                                     <br>
@@ -150,7 +147,7 @@
                                     <h2 style="color:white">WAITING</h2>
                             </div>
                     <% } else { %>
-                            <div class="block-grid-nomargin mobile-style" style="background-color:#CC0099; color:white;">
+                            <div class="eight column note-folded grey" style="margin: 12px;">
                                     <h2 style="color:white;">Anda harus mengirim uang ke : </h2>
                                     User : <%=jdhuphs.ugh%>
                                     <br>
@@ -181,12 +178,11 @@
         <% }) %>
         <% } %>
         <!--GH's-->
-        <h3>Sejarah GH anda </h3>
         <% if(ghs.length==0) { %>
-                Belum ada sejarah GH.....
+                
         <% } else { %>
         <% _.each(ghs, function(gh) { %>
-            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+            <div class="four column note-folded red" style="margin: 12px;">
                     <h2>GH</h2>
                     User : <%=gh.username%>
                     <br>
@@ -194,16 +190,14 @@
                     <br>
                     Tanggal : <%=gh.createdAt%>
             </div>
-            <br>
         <% }) %>
         <% } %>
         <!--PH's-->
-        <h3>Sejarah PH anda </h3>
         <% if(phs.length==0) { %>
-                Belum ada sejarah PH.....
+                
         <% } else { %>
         <% _.each(phs, function(ph) { %>
-            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+            <div class="four column note-folded blue" style="margin: 12px;">
                     <h2>PH</h2>
                     User : <%=ph.username%>
                     <br>
@@ -211,7 +205,6 @@
                     <br>
                     Tanggal : <%=ph.createdAt%>
             </div>
-            <br>
         <% }) %>
         <% } %>
         </div>             

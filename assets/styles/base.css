@@ -314,8 +314,9 @@ padding:12px 17px 11px 17px;
 }
 
 .button.large {
-font-size:17px;
-padding:15px 24px 16px 24px;
+font-size:37px;
+padding:35px 54px 36px 54px;
+margin: 12px;
 }
 
 .button.small i {
@@ -335,7 +336,7 @@ top:-1px;
 }
 
 .button.large i {
-font-size:21px;
+font-size:31px;
 margin-right:10px;
 vertical-align:middle;
 position:relative;

@@ -110,6 +110,7 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
   </head>
 
   <body>
+    <% if(session.authenticated) { %>
     <header>
     
         <!-- top info start here -->
@@ -143,22 +144,20 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
                 <!-- navigation start here -->
                 <nav id="mainmenu">
                     <ul id="menu">
-                        <li><a href="/">Home</a><span class="desc-menu">It's our home</span>
-                        </li>                                                   
-                        <li><a href="/user/team">Team</a><span class="desc-menu">List</span>
+                        <% if(session.authenticated) { %>
+                        <li><a href="/user/phgh">PH/GH<br><span class="desc-menu">PH/GH</span></a>
+                        </li>                                                
+                        <li><a href="/user/team">Team<br><span class="desc-menu">List</span></a>
                         </li>
-                        <li class="dropdown"><a href="#">GH Bonus</a><span class="desc-menu">Total</span>
+                        <li class="dropdown"><a href="#">GH Bonus<br><span class="desc-menu">Total</span></a>
                             <ul> 
                                 <li><a href="/user/bonussponsor">Bonus Sponsor</a></li>
                                 <li><a href="/user/bonusmanager">Bonus Manager</a></li>
                                 <li><a href="/user/bonusmultiple">Bonus Kelipatan</a></li>
                             </ul>
                         </li> 
-                        <% if(session.authenticated) { %>
-                        <li><a href="/user/phgh">PH/GH</a><span class="desc-menu">PH/GH</span>
-                        </li>
                         <% if(session.User.admin) { %>
-                            <li class="dropdown"><a href="#">Dashboard</a><span class="desc-menu">Admin's</span>
+                            <li class="dropdown"><a href="#">Dashboard<br><span class="desc-menu">Admin's</span></a>
                                 <ul>
                                     <li><a href="/user/list">List PH/GH</a></li>
                                     <li><a href="/user/history">Sejarah Jodoh</a></li>
@@ -168,18 +167,18 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
                         <% } %>      
                         <% } %>
                        
-                        <li><a href="/register">Register</a><span class="desc-menu">Member</span>
+                        <li><a href="/register">Register<br><span class="desc-menu">Member</span></a>
                         </li>
-                        <li><a href="/user/home">Ticket</a><span class="desc-menu">Transfer</span></li>
+                        <li><a href="/user/home">Ticket<br><span class="desc-menu">Transfer</span></a></li>
                          <% if(session.authenticated) { %>
-                        <li class="dropdown"><a href="#">Hai, <%=session.User.username%></a><span class="desc-menu">Settings</span>
+                        <li class="dropdown"><a href="#">Hai, <%=session.User.username%><br><span class="desc-menu">Settings</span></a>
                             <ul> 
                                 <li><a href='/user/profile'>View Profile</a></li>
                                 <li><a href='/user/logout'>Logout</a></li>
                             </ul>
                         </li> 
                         <% } else { %>
-                                <li><a href="/auth/login">Login </a><span class="desc-menu">Login</span></li>
+                                <li><a href="/auth/login">Login <br><span class="desc-menu">Login</span></a></li>
                         <% } %>
                     </ul>
                 </nav>
@@ -190,9 +189,9 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
     </header>
     <!-- header end here -->
 
-    
+    <% } %>
     <%- body %>
-
+<% if (session.authenticated) { %>
 <footer>   
         <div class="row">
             <div class="nine column">
@@ -221,7 +220,7 @@ shadow:0                //0 = no Shadow, 1,2,3 = 3 Different Art of Shadows -  (
             </div>       
         </div>
     </footer>
-
+    <% } %>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->

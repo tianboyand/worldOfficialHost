@@ -1,6 +1,6 @@
 <section class="content-wrapper">
         <div class="row">
-            <div class="eleven column">
+            <div class="six column">
                 <p class="lead">List User PH / GH</p>
                  <% if(flash && flash.err) { %>
                       <ul class="alert alert-success" type="none">
@@ -39,30 +39,58 @@
             </div>
              
         </div>
-            
         <div class="row">
-        <!--GH's-->
-        <% _.each(ghs, function(gh) { %>
-            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
-                    <h2>GH</h2>
-                    User : <%=gh.username%>
-                    <br>
-                    Nominal : <%=gh.nominal%>
-                    <br>
-                    Tanggal : <%=gh.createdAt%>
+        <div class="twelve column"> 
+                <h3 class="smallmargin-bottom">List Jodoh</h3>
             </div>
-            <br>
-        <% }) %>
-        <!--PH's-->
-        <% _.each(phs, function(ph) { %>
-            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
-                    <h2>PH</h2>
-                    User : <%=ph.username%>
-                    <br>
-                    Tanggal : <%=ph.createdAt%>
+            <div class="eight column"> 
+                <table class="table-blue">
+                  <thead>
+                      <tr>
+                        <th>#PH</th>
+                        <th>Username</th>
+                        <th>Nominal</th>
+                        <th>Tanggal</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <% var idx = 1; %>
+                    <% _.each(phs, function(ph) { %>
+                      <tr>
+                        <td><%=idx%></td>
+                        <td><%=ph.username%></td>
+                        <td><%=ph.nominal%></td>
+                        <td><%=ph.createdAt%></td>
+                      </tr>
+                      <% idx = idx+1; %>
+                      <% }) %>                                          
+                  </tbody>
+                </table>    
             </div>
-            <br>
-        <% }) %>
+            <div class="eight column">
+                <table class="table-red">
+                  <thead>
+                      <tr>
+                        <th>#GH</th>
+                        <th>Username</th>
+                        <th>Nominal</th>
+                        <th>Tanggal</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% var idx = 1; %>
+                    <% _.each(ghs, function(gh) { %>
+                      <tr>
+                        <td><%=idx%></td>
+                        <td><%=gh.username%></td>
+                        <td><%=gh.nominal%></td>
+                        <td><%=gh.createdAt%></td>
+                      </tr>
+                      <% idx = idx+1; %>
+                      <% }) %>                                                        
+                  </tbody>
+                </table>    
+            </div>
         </div>             
     </section>
 <script>

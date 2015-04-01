@@ -1,12 +1,12 @@
 <section class="content-wrapper">
         <div class="row">
-            <div class="eleven column">
+            <div class="six column">
                 <p class="lead">Sejarah PH / GH </p>
             </div>        
         </div>  
         <div class="row">
         <% _.each(jodohs, function(jodoh) { %>
-            <div class="block-grid-nomargin three-up mobile-style" style="background-color:#33FFCC;">
+            <div class="five column note-folded blue" style="margin: 12px;">
                     User PH: <%=jodoh.uph%>
                     <br>
                     User GH: <%=jodoh.ugh%>
@@ -15,7 +15,6 @@
                     <br>
                     Tanggal : <%=jodoh.createdAt%>
             </div>
-            <br>
         <% }) %>
         </div>             
     </section>

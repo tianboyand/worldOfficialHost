@@ -423,25 +423,8 @@ module.exports = {
 						User.findOne({'username':jodoh.uph}, function(err,user1){
 							User.findOne({'id' : user1.ref}, function(err,user){
 								if(err) return next(err);
-								var bonus = user.sponsor;
-								bonus +=100000;
-								User.update(user.id, {'sponsor': bonus}, function(err,userupd){});
-								User.find(function(err, users){
-									if(err) return next(err);
-									for(var i=0;i<users.length;i++)
-									{
-										var team = users[i].team;
-										for(var j=0;j<team.length;j++)
-										{
-											if(team[j]==jodoh.uph)
-											{
-												var bns = users[i].manager;
-												bns +=100000;
-												User.update({'id':users[i].id}, {'manager':bns}, function(err,userupdt){});
-												break;
-											}
-										}
-									}
+								if(typeof user=="undefined") 
+								{
 									var userObj = {
 										idUser : req.session.User.id,
 										username : req.session.User.username,
@@ -456,7 +439,44 @@ module.exports = {
 										}
 										return res.redirect('/user/phgh');
 									});
-								});
+								}
+								else
+								{
+									var bonus = user.sponsor;
+									bonus +=100000;
+									User.update(user.id, {'sponsor': bonus}, function(err,userupd){});
+									User.find(function(err, users){
+										if(err) return next(err);
+										for(var i=0;i<users.length;i++)
+										{
+											var team = users[i].team;
+											for(var j=0;j<team.length;j++)
+											{
+												if(team[j]==jodoh.uph)
+												{
+													var bns = users[i].manager;
+													bns +=100000;
+													User.update({'id':users[i].id}, {'manager':bns}, function(err,userupdt){});
+													break;
+												}
+											}
+										}
+										var userObj = {
+											idUser : req.session.User.id,
+											username : req.session.User.username,
+											verification : false,
+											nominal : 1000000
+										}
+										Ph.create(userObj, function(err,ph){
+											if(err) return next(err);
+											var requireLoginError = ['Konfirmasi berhasil dan anda langsung dihadapkan dengan PH....'];
+											req.session.flash = {
+												err: requireLoginError
+											}
+											return res.redirect('/user/phgh');
+										});
+									});
+								}
 							});	
 						});
 					});
