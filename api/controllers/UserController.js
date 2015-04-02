@@ -118,15 +118,17 @@ module.exports = {
 					       		}
 					     		User.find({'ref':req.session.User.id}, function(err,users){
 					     			if(err) return next(err);
-					     			var bnsmulti = user.multiple;
+					     			var bnsmulti4 = user.multiple4;
+					     			var bnsmulti10 = user.multiple10;
+					     			var bnsmulti20 = user.multiple20;
 								var jlh = users.length;
 								if(jlh%4==0)
-									bnsmulti += ((jlh/4)*500000);
+									bnsmulti4 += ((jlh/4)*500000);
 								if(jlh%10==0)
-									bnsmulti += ((jlh/10)*1000000);
+									bnsmulti10 += ((jlh/10)*1000000);
 								if(jlh%20==0)
-									bnsmulti += ((jlh/20)*2000000);
-								User.update({'id':req.session.User.id}, {'ticket':user.ticket-1, multiple: bnsmulti}, function(err,user4){
+									bnsmulti20 += ((jlh/20)*2000000);
+								User.update({'id':req.session.User.id}, {'ticket':user.ticket-1, multiple4: bnsmulti4, multiple10 : bnsmulti10, multiple20 : bnsmulti20}, function(err,user4){
 						       			if(err) return next(err);
 						       			req.session.User.ticket -=1;
 						       			Ph.create(userObj, function(err,ph){
@@ -696,7 +698,7 @@ module.exports = {
 			});
 		});
 	},
-	gethelpmultiple : function(req,res,next){
+	gethelpmultiple4 : function(req,res,next){
 		User.findOne({'id':req.session.User.id}, function(err,user){
 			if(err) return next(err);
 			var tmp = req.param('nominalgh');
@@ -712,7 +714,7 @@ module.exports = {
 				}
 			}
 			var money = parseInt(tmp);
-			if(money<500000 || money>user.sponsor)
+			if(money<500000 || money>user.multiple4)
 			{
 				var requireLoginError = ['Nominal harus diantara Rp. 500.000 sampai batas bonus anda....'];
 				  req.session.flash = {
@@ -734,8 +736,8 @@ module.exports = {
 				nominal : money,
 				username : req.session.User.username
 			}
-			var saldo = user.sponsor - money;
-			User.update(user.id, {'sponsor': saldo}, function(err,user){
+			var saldo = user.multiple4 - money;
+			User.update(user.id, {'multiple4': saldo}, function(err,user){
 				if(err) return next(err);
 				Gh.create(usrObj, function(err,gh){
 					if(err) return next(err);
@@ -748,7 +750,110 @@ module.exports = {
 			});
 		});
 	},
-
+	gethelpmultiple10 : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			if(err) return next(err);
+			var tmp = req.param('nominalgh');
+			for(var i=0;i<tmp.length;i++)
+			{
+				if(tmp[i]<'0' || tmp[i]>'9')
+				{	
+				var requireLoginError = ['Masukkan nominal berupa angka....!!!!'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+				}
+			}
+			var money = parseInt(tmp);
+			if(money<500000 || money>user.multiple10)
+			{
+				var requireLoginError = ['Nominal harus diantara Rp. 500.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+			}
+			if(money % 500000!=0)
+			{
+				var requireLoginError = ['Nominal harus merupakan kelipatan Rp. 500.000'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+			}
+			var usrObj = {
+				idUser : req.session.User.id,
+				verification : false,
+				nominal : money,
+				username : req.session.User.username
+			}
+			var saldo = user.multiple10 - money;
+			User.update(user.id, {'multiple10': saldo}, function(err,user){
+				if(err) return next(err);
+				Gh.create(usrObj, function(err,gh){
+					if(err) return next(err);
+					var requireLoginError = ['Anda berhasil melakukan GH terhadap permintaan bonus anda...'];
+					  req.session.flash = {
+					  	err: requireLoginError
+					  }
+					return res.redirect('/user/bonusmultiple');	
+				});
+			});
+		});
+	},
+	gethelpmultiple20 : function(req,res,next){
+		User.findOne({'id':req.session.User.id}, function(err,user){
+			if(err) return next(err);
+			var tmp = req.param('nominalgh');
+			for(var i=0;i<tmp.length;i++)
+			{
+				if(tmp[i]<'0' || tmp[i]>'9')
+				{	
+				var requireLoginError = ['Masukkan nominal berupa angka....!!!!'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+				}
+			}
+			var money = parseInt(tmp);
+			if(money<500000 || money>user.multiple20)
+			{
+				var requireLoginError = ['Nominal harus diantara Rp. 500.000 sampai batas bonus anda....'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+			}
+			if(money % 500000!=0)
+			{
+				var requireLoginError = ['Nominal harus merupakan kelipatan Rp. 500.000'];
+				  req.session.flash = {
+				  	err: requireLoginError
+				  }
+				   return res.redirect('/user/bonusmultiple');
+			}
+			var usrObj = {
+				idUser : req.session.User.id,
+				verification : false,
+				nominal : money,
+				username : req.session.User.username
+			}
+			var saldo = user.multiple20 - money;
+			User.update(user.id, {'multiple4': saldo}, function(err,user){
+				if(err) return next(err);
+				Gh.create(usrObj, function(err,gh){
+					if(err) return next(err);
+					var requireLoginError = ['Anda berhasil melakukan GH terhadap permintaan bonus anda...'];
+					  req.session.flash = {
+					  	err: requireLoginError
+					  }
+					return res.redirect('/user/bonusmultiple');	
+				});
+			});
+		});
+	},
 	bonusmanager : function(req,res,next){
 		User.findOne({'id':req.session.User.id}, function(err,user){
 			var usrObj;

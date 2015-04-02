@@ -47,8 +47,10 @@ module.exports.policies = {
       'notify' : ['sessionAuth','flash'],
       'bonussponsor' : ['sessionAuth','flash'],
       'bonusmanager' : ['sessionAuth','flash'],
+      'bonusmultiple' : ['sessionAuth','flash'],
       'gethelpbonus' : ['sessionAuth','flash'],
       'gethelpmanager' : ['sessionAuth','flash'],
+
   },
   auth : {
       'login' : 'flash'

@@ -11,15 +11,41 @@
                         </ul>
                     <% } %>
                     <!-- Contact Form Start //-->
-                    <form action="/user/gethelpsponsor" id="contactform"> 
+                    <form action="/user/gethelpmultiple4" id="contactform"> 
                         <fieldset> 
-                        <label>Bonus Confirmed</label>                           
-                        <input type="text" name="bonusconf" class="textfield" id="bonusconf" value="Rp. <%=user.multiple%>" readonly="true" />
+                        <label>Bonus Multiple 4</label>                           
+                        <input type="text" class="textfield" id="bonusconf" value="Rp. <%=user.multiple4%>" readonly="true" />
                         <label>Nominal GH <em>*</em></label>                           
                         <input type="text" name="nominalgh" class="textfield" id="nominalgh" />
                         <div class="clear"></div> 
                         <label>&nbsp;</label>
-                        <button type="submit" name="submit" class="buttoncontact" id="buttonsend">Submit</button>
+                        <button type="submit"class="buttoncontact" id="buttonsend">Submit</button>
+                        <span class="loading" style="display: none;">Please wait..</span>
+                        <div class="clear"></div>
+                        </fieldset> 
+                    </form>
+                    <form action="/user/gethelpmultiple10" id="contactform"> 
+                        <fieldset> 
+                        <label>Bonus Multiple 10</label>                           
+                        <input type="text" class="textfield" id="bonusconf" value="Rp. <%=user.multiple10%>" readonly="true" />
+                        <label>Nominal GH <em>*</em></label>                           
+                        <input type="text" name="nominalgh" class="textfield" id="nominalgh" />
+                        <div class="clear"></div> 
+                        <label>&nbsp;</label>
+                        <button type="submit" class="buttoncontact" id="buttonsend">Submit</button>
+                        <span class="loading" style="display: none;">Please wait..</span>
+                        <div class="clear"></div>
+                        </fieldset> 
+                    </form>
+                    <form action="/user/gethelpmultiple20" id="contactform"> 
+                        <fieldset> 
+                        <label>Bonus Multiple 20</label>                           
+                        <input type="text" class="textfield" id="bonusconf" value="Rp. <%=user.multiple20%>" readonly="true" />
+                        <label>Nominal GH <em>*</em></label>                           
+                        <input type="text" name="nominalgh" class="textfield" id="nominalgh" />
+                        <div class="clear"></div> 
+                        <label>&nbsp;</label>
+                        <button type="submit" class="buttoncontact" id="buttonsend">Submit</button>
                         <span class="loading" style="display: none;">Please wait..</span>
                         <div class="clear"></div>
                         </fieldset> 
