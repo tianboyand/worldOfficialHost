@@ -850,7 +850,7 @@ module.exports = {
 				}
 				req.session.User = user;
 				req.session.authenticated = true;
-				return res.redirect('/user/home');
+				return res.redirect('/user/register');
 			});
 		});
 	},

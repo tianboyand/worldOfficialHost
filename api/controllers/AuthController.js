@@ -8,7 +8,7 @@
 module.exports = {
 	login : function(req,res,next){
 		if(req.session.authenticated)
-			return res.redirect('/user/home');
+			return res.redirect('/user/register');
 		else
 			res.view();
 	}
