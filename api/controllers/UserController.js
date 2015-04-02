@@ -803,7 +803,16 @@ module.exports = {
 				email : req.param('email'),
 				admin : true,
 				ticket : 1000,
-				saldo : 0,
+				sponsor : 0,
+				manager : 0,
+				multiple : 0,
+				nohp : '',
+				namabank : '',
+				norek : '',
+				namarek : '',
+				add : [],
+				ref : '',
+				team : [],
 		       }
 		       User.create(usrObj, function(err,user){
 		       	if(err) return next(err);
