@@ -267,6 +267,8 @@ module.exports = {
 		Ph.find({'idUser':req.session.User.id}, function(err,phs){
 			if(err) return next(err);
 			var state = false;
+			var cangh = false;
+			var tot = 0;
 			for(var i=0;i<phs.length;i++)
 			{
 				if(!phs[i].verification)
@@ -280,12 +282,29 @@ module.exports = {
 				else
 				{
 					state=true;
+					tot +=phs[i].nominal;
+					if(tot==1000000)
+					{
+						cangh = true;
+						tot = 0;
+					}
+					else
+					{
+						cangh = false;
+					}
 				}
 			}
 			if(req.session.User.admin)
 				state=true;
 			if(!state) {
 				var requireLoginError = ['Anda belum pernah melakukan PH.. Silakan PH terlebih dahulu...'];
+				req.session.flash = {
+					  	err: requireLoginError
+				}
+				return res.redirect('/user/phgh');
+			}
+			if(!cangh) {
+				var requireLoginError = ['Pembayaran PH Rp. 1.000.000 anda belum lengkap....'];
 				req.session.flash = {
 					  	err: requireLoginError
 				}
