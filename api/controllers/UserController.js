@@ -267,8 +267,6 @@ module.exports = {
 		Ph.find({'idUser':req.session.User.id}, function(err,phs){
 			if(err) return next(err);
 			var state = false;
-			var cangh = false;
-			var tot = 0;
 			for(var i=0;i<phs.length;i++)
 			{
 				if(!phs[i].verification)
@@ -282,16 +280,6 @@ module.exports = {
 				else
 				{
 					state=true;
-					tot +=phs[i].nominal;
-					if(tot==1000000)
-					{
-						cangh = true;
-						tot = 0;
-					}
-					else
-					{
-						cangh = false;
-					}
 				}
 			}
 			if(req.session.User.admin)
@@ -303,47 +291,74 @@ module.exports = {
 				}
 				return res.redirect('/user/phgh');
 			}
-			if(!cangh) {
-				var requireLoginError = ['Pembayaran PH Rp. 1.000.000 anda belum lengkap....'];
-				req.session.flash = {
-					  	err: requireLoginError
-				}
-				return res.redirect('/user/phgh');
-			}
-			Gh.find({'idUser':req.session.User.id}, function(err,ghs){
+			Jodoh.find({'uph':req.session.User.username}, function(err,jdh){
 				if(err) return next(err);
-				for(var i=0;i<ghs.length;i++)
+				var cangh = false;
+				var tot = 0;
+				for(var i=0;i<jdh.length;i++)
 				{
-					if(!ghs[i].verification)
+					if(jdh[i].confirmation)
 					{
-						var requireLoginError = ['Anda sudah memilih GH...'];
-						  req.session.flash = {
-						  	err: requireLoginError
-						  }
-						   return res.redirect('/user/phgh');
+						tot+=jdh[i].nominal;
+						if(tot==1000000)
+						{
+							tot = 0;
+							cangh = true;
+						}
+						else
+						{
+							cangh = false;
+						}
+					}
+					else
+					{
+						cangh = false;
+						break;
 					}
 				}
-				User.findOne({'id':req.session.User.id}, function(err,user){
-					if(err) return next(err);
-					if(user.ticket<=0)
-					{
-						var requireLoginError = ['Tiket anda kurang... Harap ditambahkan....'];
-								  req.session.flash = {
-								  	err: requireLoginError
-								  }
-						return res.redirect('/user/phgh');
+				if(!cangh) {
+					var requireLoginError = ['Pembayaran PH Rp. 1.000.000 anda belum lengkap....'];
+					req.session.flash = {
+						  	err: requireLoginError
 					}
-					Gh.create(usrObj, function(err,gh){
+					return res.redirect('/user/phgh');
+				}
+				Gh.find({'idUser':req.session.User.id}, function(err,ghs){
+					if(err) return next(err);
+					for(var i=0;i<ghs.length;i++)
+					{
+						if(!ghs[i].verification)
+						{
+							var requireLoginError = ['Anda sudah memilih GH...'];
+							  req.session.flash = {
+							  	err: requireLoginError
+							  }
+							   return res.redirect('/user/phgh');
+						}
+					}
+					User.findOne({'id':req.session.User.id}, function(err,user){
 						if(err) return next(err);
-						User.update({'id':req.session.User.id}, {'ticket':user.ticket-1}, function(err,user1){
-							if(err) return next(err);
-							req.session.User.ticket-=1;
+						if(user.ticket<=0)
+						{
+							var requireLoginError = ['Tiket anda kurang... Harap ditambahkan....'];
+									  req.session.flash = {
+									  	err: requireLoginError
+									  }
 							return res.redirect('/user/phgh');
-						});	
+						}
+						Gh.create(usrObj, function(err,gh){
+							if(err) return next(err);
+							User.update({'id':req.session.User.id}, {'ticket':user.ticket-1}, function(err,user1){
+								if(err) return next(err);
+								req.session.User.ticket-=1;
+								return res.redirect('/user/phgh');
+							});	
+						});
 					});
+					
 				});
-				
 			});
+			
 		});
 	},
 	makerelation : function(req,res,next){
@@ -444,19 +459,52 @@ module.exports = {
 								if(err) return next(err);
 								if(typeof user=="undefined") 
 								{
-									var userObj = {
-										idUser : req.session.User.id,
-										username : req.session.User.username,
-										verification : false,
-										nominal : 1000000
-									}
-									Ph.create(userObj, function(err,ph){
+									Jodoh.find({'ugh':jodoh.ugh}, function(err,jdh){
 										if(err) return next(err);
-										var requireLoginError = ['Konfirmasi berhasil dan anda langsung dihadapkan dengan PH....'];
-										req.session.flash = {
-											err: requireLoginError
+										var tot = 0;
+										var state = false;
+										for(var i=0;i<jdh.length;i++)
+										{
+											if(jdh[i].confirmation)
+											{
+												tot +=jdh[i].nominal;
+												if(tot==1500000)
+												{
+													state = true;
+													tot = 0;
+												}
+												else
+												{
+													state = false;
+												}
+											}
+											else
+											{
+												state = false;
+												break;
+											}
 										}
-										return res.redirect('/user/phgh');
+										if(state)
+										{
+											var userObj = {
+												idUser : req.session.User.id,
+												username : req.session.User.username,
+												verification : false,
+												nominal : 1000000
+											}
+											Ph.create(userObj, function(err,ph){
+												if(err) return next(err);
+												var requireLoginError = ['Konfirmasi berhasil dan anda langsung dihadapkan dengan PH....'];
+												req.session.flash = {
+													err: requireLoginError
+												}
+												return res.redirect('/user/phgh');
+											});
+										}
+										else
+										{
+											return res.redirect('/user/phgh');
+										}
 									});
 								}
 								else
@@ -480,19 +528,53 @@ module.exports = {
 												}
 											}
 										}
-										var userObj = {
-											idUser : req.session.User.id,
-											username : req.session.User.username,
-											verification : false,
-											nominal : 1000000
-										}
-										Ph.create(userObj, function(err,ph){
+										Jodoh.find({'ugh':jodoh.ugh}, function(err,jdh){
 											if(err) return next(err);
-											var requireLoginError = ['Konfirmasi berhasil dan anda langsung dihadapkan dengan PH....'];
-											req.session.flash = {
-												err: requireLoginError
+											var tot = 0;
+											var state = false;
+											for(var i=0;i<jdh.length;i++)
+											{
+												if(jdh[i].confirmation)
+												{
+													tot +=jdh[i].nominal;
+													if(tot==1500000)
+													{
+														state = true;
+														tot = 0;
+													}
+													else
+													{
+														state = false;
+													}
+												}
+												else
+												{
+													state = false;
+													break;
+												}
 											}
-											return res.redirect('/user/phgh');
+											if(state)
+											{
+												var userObj = {
+													idUser : req.session.User.id,
+													username : req.session.User.username,
+													verification : false,
+													nominal : 1000000
+												}
+												
+												Ph.create(userObj, function(err,ph){
+													if(err) return next(err);
+													var requireLoginError = ['Konfirmasi berhasil dan anda langsung dihadapkan dengan PH....'];
+													req.session.flash = {
+														err: requireLoginError
+													}
+													return res.redirect('/user/phgh');
+												});
+											}
+											else
+											{
+												return res.redirect('/user/phgh');
+											}
 										});
 									});
 								}
