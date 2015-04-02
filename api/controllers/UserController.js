@@ -58,16 +58,16 @@ module.exports = {
 					   return res.redirect('/register');
 				}
 				//search by email
-				User.findOne({'email':req.param('email')}, function(err, user2){
-					if(err) return next(err);
-					if(user2)
+				//User.findOne({'email':req.param('email')}, function(err, user2){
+					//if(err) return next(err);
+					/*if(user2)
 					{
 						var requireLoginError = ['Sudah ada user dengan email tersebut'];
 						  req.session.flash = {
 						  	err: requireLoginError
 						  }
 						  return res.redirect('/register');
-					}
+					}*/
 					bcrypt.hash(req.param('password'), 10, function passwordEncrypted(err, encryptedPassword) {
 					      if (err) return next(err);
 					      var add = user.add;
@@ -146,7 +146,7 @@ module.exports = {
 					       	}
 					       });
 					});
-				});
+				//});
 			});
 		});
 	},

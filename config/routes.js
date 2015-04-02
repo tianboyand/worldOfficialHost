@@ -38,6 +38,9 @@ module.exports.routes = {
   '/adminhome' : {
       view : 'adminhome'
   },
+  '/faq' : {
+      view : 'FAQ'
+  },
   '/register' : 'UserController.register',
   '/new' : 'UserController.new',
 
